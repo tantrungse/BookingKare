@@ -23,13 +23,8 @@
             <th>Firstname</th>
             <th>Lastname</th>
             <th>Address</th>
+            <th>Actions</th>
         </tr>
-        <tr>
-            <td>Jill</td>
-            <td>Smith</td>
-            <td>50</td>
-        </tr>
-
         <% for(let i=0; i < dataTable.length; i++) { %>
             <tr>
                 <td>
@@ -43,6 +38,10 @@
                 </td>
                 <td>
                     <%= dataTable[i].address %>
+                </td>
+                <td>
+                    <a href="/edit-crud?id=<%= dataTable[i].id %>" class="btn-edit" type="button">Edit</a>
+                    <a href="http://localhost:8080/delete-crud?id=1" class="btn-delete" type="button">Delete</a>
                 </td>
             </tr>
             <% } %>
