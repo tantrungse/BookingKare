@@ -2,23 +2,23 @@ import db from "../models/index";
 import bcrypt from 'bcryptjs';
 
 let handleUserLogin = (email, password) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let userData = {};
 
-            let isExist = await     checkUserEmail(email);
-            if(isExist) {
+            let isExist = await checkUserEmail(email);
+            if (isExist) {
                 // user already exist
-                
+
                 let user = await db.User.findOne({
                     attributes: ['email', 'roleId', 'password'],
                     where: { email: email },
                     raw: true
                 })
-                if(user) {
+                if (user) {
                     // compare password
-                    let check = await bcrypt.compareSync(password, user.password); 
-                    if(check) {
+                    let check = await bcrypt.compareSync(password, user.password);
+                    if (check) {
                         userData.errCode = 0;
                         userData.errMessage = "Ok";
 
@@ -46,12 +46,12 @@ let handleUserLogin = (email, password) => {
 }
 
 let checkUserEmail = (userEmail) => {
-    return new Promise(async(resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
             let user = await db.User.findOne({
-                where: { email : userEmail }
+                where: { email: userEmail }
             })
-            if(user) {
+            if (user) {
                 resolve(true)
             } else {
                 resolve(false)
@@ -62,6 +62,30 @@ let checkUserEmail = (userEmail) => {
     })
 }
 
+let getAllUsers = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = '';
+            if (userId === 'ALL') {
+                users = await db.User.findAll({
+                    attributes: {
+                        exclude: ['password']
+                    }
+                });
+            }
+            if (userId && userId !== 'ALL') {
+                users = await db.User.findOne({
+                    where: { id: userId }
+                });
+            }
+            resolve(users);
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
-    handleUserLogin: handleUserLogin
+    handleUserLogin: handleUserLogin,
+    getAllUsers: getAllUsers
 }
