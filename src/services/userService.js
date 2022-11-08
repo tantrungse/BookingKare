@@ -153,7 +153,7 @@ let updateUser = (data) => {
 
                 resolve({
                     errCode: 0,
-                    message: 'User was updated'
+                    errMessage: 'User was updated'
                 })
             } else {
                 resolve({
@@ -183,7 +183,7 @@ let deleteUser = (userId) => {
             })
             resolve({
                 errCode: 0,
-                message: `User was deleted `
+                errMessage: `User was deleted `
             })
         }
     })
